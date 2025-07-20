@@ -4,10 +4,7 @@ package com.sloth_x.restapi.controller;
 import com.sloth_x.restapi.entity.Department;
 import com.sloth_x.restapi.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +20,24 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments")
-    public List<Department> fetchAllDepartment(){
+    public List<Department> fetchAllDepartment() {
         return departmentService.fetchAllDepartment();
+    }
+
+    @GetMapping("/departments/{id}")
+    public Department fetchDepartmentById(@PathVariable("id") long departmentID) {
+        return departmentService.fetchDepartmentById(departmentID);
+    }
+
+    @DeleteMapping("/departments/{id}")
+    public String deleteDepartmentById(@PathVariable("id") long departmentId) {
+        departmentService.deleteDepartmentById(departmentId);
+        return "Department Deleted Successfully";
+    }
+
+    @PutMapping("/departments/{id}")
+    public Department updateDepartment(@PathVariable("id") long departmentId, @RequestBody Department department) {
+        return departmentService.updateDepartment(departmentId, department);
     }
 
 }
