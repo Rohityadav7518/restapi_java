@@ -2,12 +2,14 @@ package com.sloth_x.restapi.service;
 
 
 import com.sloth_x.restapi.entity.Department;
+import com.sloth_x.restapi.error.DepartmentNotFoundException;
 import com.sloth_x.restapi.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -26,8 +28,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department fetchDepartmentById(long departmentID) {
-        return departmentRepository.findById(departmentID).get();
+    public Department fetchDepartmentById(long departmentID) throws DepartmentNotFoundException {
+        Optional<Department> department=
+                departmentRepository.findById(departmentID);
+        if (!department.isPresent()){
+            throw  new DepartmentNotFoundException("Department Not Avilable");
+        }
+
+        return  department.get();
     }
 
     @Override
